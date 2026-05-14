@@ -14,6 +14,8 @@ Este projeto implementa 4 algoritmos clássicos de busca de padrão em texto com
 
 A aplicação permite processar um ou mais arquivos .txt, escolher um algoritmo específico ou executar todos, e comparar desempenho real com complexidade teórica.
 
+Agora o projeto tambem exporta spans OpenTelemetry em arquivo local e inclui um dashboard para analise historica das execucoes.
+
 ## Objetivo
 
 Buscar uma string padrão dentro de textos e exibir, para cada algoritmo executado:
@@ -62,6 +64,12 @@ Pré-requisitos:
 
 - Python 3.10+
 
+- Dependencias em requirements.txt
+
+Instalacao:
+
+  pip install -r requirements.txt
+
 Exemplos de execução:
 
 1. Executar todos os algoritmos em um arquivo:
@@ -80,6 +88,14 @@ Exemplos de execução:
 
    python main.py text.txt -p "the" -a boyer-moore --step-by-step
 
+5. Executar com OpenTelemetry habilitado e exportando spans locais:
+
+  python main.py text.txt -p "the" -a all --telemetry-dir telemetry_data
+
+6. Abrir o dashboard:
+
+  streamlit run dashboard.py
+
 ## Parâmetros da CLI
 
 - files: um ou mais arquivos .txt
@@ -89,6 +105,38 @@ Exemplos de execução:
 - -a, --algorithm: naive | rabin-karp | kmp | boyer-moore | all
 
 - --step-by-step: habilita log detalhado da execução
+
+- --disable-telemetry: desabilita a exportação local de spans OpenTelemetry
+
+- --telemetry-dir: diretório onde o arquivo telemetry_data/search_runs.jsonl será criado
+
+## OpenTelemetry e Dashboard
+
+Cada execucao de algoritmo gera um span OpenTelemetry chamado string_search.run com atributos como:
+
+- Algoritmo
+
+- Arquivo processado
+
+- Tempo total em ms
+
+- Numero de comparacoes
+
+- Quantidade de ocorrencias
+
+- Tamanho do texto e do padrao
+
+Esses spans sao exportados para telemetry_data/search_runs.jsonl e consumidos pelo dashboard em Streamlit.
+
+O dashboard apresenta:
+
+- Tempo de execucao medio por algoritmo
+
+- Numero de execucoes por algoritmo
+
+- Comparacao entre algoritmos por meio de um grafico de comparacoes x tempo
+
+- Tabela agregada com resumo das execucoes
 
 ## Saída e Métricas
 

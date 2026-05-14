@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from time import perf_counter
 
+from telemetry import get_tracer
+
 
 @dataclass
 class SearchResult:
@@ -28,29 +30,48 @@ class SearchStrategy(ABC):
     theoretical_average: str = ""
     theoretical_worst: str = ""
 
-    def run(self, text: str, pattern: str, file_path: str, step_by_step: bool = False) -> SearchResult:
-        start = perf_counter()
-        matches, comparisons, logs = self.search(text, pattern, step_by_step)
-        elapsed = perf_counter() - start
+    def run(
+        self, text: str, pattern: str, file_path: str, step_by_step: bool = False
+    ) -> SearchResult:
+        tracer = get_tracer()
+        with tracer.start_as_current_span("string_search.run") as span:
+            span.set_attribute("search.algorithm", self.name)
+            span.set_attribute("search.file_path", file_path)
+            span.set_attribute("search.pattern", pattern)
+            span.set_attribute("search.pattern_length", len(pattern))
+            span.set_attribute("search.text_length", len(text))
+            span.set_attribute("search.step_by_step", step_by_step)
 
-        return SearchResult(
-            algorithm=self.name,
-            file_path=file_path,
-            pattern=pattern,
-            text_length=len(text),
-            pattern_length=len(pattern),
-            comparisons=comparisons,
-            matches=matches,
-            elapsed_seconds=elapsed,
-            theoretical_best=self.theoretical_best,
-            theoretical_average=self.theoretical_average,
-            theoretical_worst=self.theoretical_worst,
-            expected_scale_average=self.expected_average_scale(len(text), len(pattern)),
-            step_logs=logs,
-        )
+            start = perf_counter()
+            matches, comparisons, logs = self.search(text, pattern, step_by_step)
+            elapsed = perf_counter() - start
+
+            span.set_attribute("search.comparisons", comparisons)
+            span.set_attribute("search.matches_count", len(matches))
+            span.set_attribute("search.elapsed_ms", elapsed * 1000)
+
+            return SearchResult(
+                algorithm=self.name,
+                file_path=file_path,
+                pattern=pattern,
+                text_length=len(text),
+                pattern_length=len(pattern),
+                comparisons=comparisons,
+                matches=matches,
+                elapsed_seconds=elapsed,
+                theoretical_best=self.theoretical_best,
+                theoretical_average=self.theoretical_average,
+                theoretical_worst=self.theoretical_worst,
+                expected_scale_average=self.expected_average_scale(
+                    len(text), len(pattern)
+                ),
+                step_logs=logs,
+            )
 
     @abstractmethod
-    def search(self, text: str, pattern: str, step_by_step: bool = False) -> tuple[list[int], int, list[str]]:
+    def search(
+        self, text: str, pattern: str, step_by_step: bool = False
+    ) -> tuple[list[int], int, list[str]]:
         raise NotImplementedError
 
     @abstractmethod

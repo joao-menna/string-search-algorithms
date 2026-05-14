@@ -29,8 +29,12 @@ class TestNaiveSearchWorstCase:
         pattern = "aaab"
         text = "a" * 1000 + "c"  # 1000 'a's + um 'c'
 
-        print(f"\n[Naive - Worst Case] Pattern: '{pattern}' ({len(pattern)} chars), Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Naive - Worst Case] Pattern: '{pattern}' ({len(pattern)} chars), Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches: {len(matches)}, Comparações: {comparisons}")
 
         assert matches == []  # Nenhum match
@@ -47,8 +51,12 @@ class TestNaiveSearchWorstCase:
         pattern = "aaa"
         text = "a" * 500
 
-        print(f"\n[Naive - Almost Match] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Naive - Almost Match] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches encontrados: {len(matches)}, Comparações: {comparisons}")
 
         # Com 500 'a's, o padrão aparece em várias posições
@@ -62,7 +70,9 @@ class TestNaiveSearchWorstCase:
         text = "a" * 100
 
         print(f"\n[Naive - Single Char] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches: {len(matches)}, Comparações: {comparisons}")
 
         assert matches == []
@@ -85,8 +95,12 @@ class TestRabinKarpWorstCase:
         # mas não correspondem ao padrão real
         text = "a" * 500 + "abc"
 
-        print(f"\n[Rabin-Karp - Hash Collisions] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Rabin-Karp - Hash Collisions] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Match em posição: {matches}, Comparações: {comparisons}")
 
         # Deve encontrar uma ocorrência ao final
@@ -98,8 +112,12 @@ class TestRabinKarpWorstCase:
         pattern = "xyz"
         text = "x" * 300 + "y" * 300 + "z" * 300 + "xyz"
 
-        print(f"\n[Rabin-Karp - Pattern at End] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Rabin-Karp - Pattern at End] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Match em posição: {matches}, Comparações: {comparisons}")
 
         assert matches == [900]
@@ -109,8 +127,12 @@ class TestRabinKarpWorstCase:
         pattern = "abcd"
         text = "a" * 400 + "b" * 400 + "xyz"
 
-        print(f"\n[Rabin-Karp - Similar Prefix] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Rabin-Karp - Similar Prefix] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches: {len(matches)}, Comparações: {comparisons}")
 
         assert matches == []
@@ -130,8 +152,12 @@ class TestKMPSearchWorstCase:
         pattern = "aaaa"
         text = "a" * 1000
 
-        print(f"\n[KMP - Overlapping Repeats] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[KMP - Overlapping Repeats] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches encontrados: {len(matches)}, Comparações: {comparisons}")
         print(f"  Complexidade: O(n+m) = {len(text) + len(pattern)} (linear!)")
 
@@ -147,8 +173,12 @@ class TestKMPSearchWorstCase:
         pattern = "abcd"
         text = "a" * 2000
 
-        print(f"\n[KMP - Pattern Never Found] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[KMP - Pattern Never Found] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches: {len(matches)}, Comparações: {comparisons}")
         print(f"  Eficiência KMP mesmo sem match encontrado")
 
@@ -162,8 +192,12 @@ class TestKMPSearchWorstCase:
         pattern = "a" * 100
         text = "a" * 5000
 
-        print(f"\n[KMP - Long Pattern Long Text] Pattern: {len(pattern)} chars, Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[KMP - Long Pattern Long Text] Pattern: {len(pattern)} chars, Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches encontrados: {len(matches)}, Comparações: {comparisons}")
         print(f"  Complexidade O(n+m): esperado ~{len(text) + len(pattern)}")
 
@@ -187,8 +221,12 @@ class TestBoyerMooreWorstCase:
         # Texto com muitos 'a's - vai causar movimentos pequenos
         text = "a" * 500 + "b"
 
-        print(f"\n[Boyer-Moore - Worst Case] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Boyer-Moore - Worst Case] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Match em posição: {matches}, Comparações: {comparisons}")
         print(f"  Pior caso: repeating pattern causa saltos pequenos")
 
@@ -200,8 +238,12 @@ class TestBoyerMooreWorstCase:
         pattern = "xyz"
         text = "a" * 1000 + "xyz"
 
-        print(f"\n[Boyer-Moore - Pattern at End] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Boyer-Moore - Pattern at End] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Match em posição: {matches}, Comparações: {comparisons}")
 
         assert matches == [1000]
@@ -214,8 +256,12 @@ class TestBoyerMooreWorstCase:
         pattern = "abc"
         text = "aba" * 500  # Padrão nunca aparece
 
-        print(f"\n[Boyer-Moore - Single Char Mismatch] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Boyer-Moore - Single Char Mismatch] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches: {len(matches)}, Comparações: {comparisons}")
         print(f"  Boyer-Moore eficiente com saltos grandes")
 
@@ -227,8 +273,12 @@ class TestBoyerMooreWorstCase:
         pattern = "aaa"
         text = "a" * 300
 
-        print(f"\n[Boyer-Moore - All Same Chars] Pattern: '{pattern}', Texto: {len(text)} chars")
-        matches, comparisons, _ = self.strategy.search(text, pattern, step_by_step=False)
+        print(
+            f"\n[Boyer-Moore - All Same Chars] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
+        matches, comparisons, _ = self.strategy.search(
+            text, pattern, step_by_step=False
+        )
         print(f"  Matches encontrados: {len(matches)}, Comparações: {comparisons}")
         print(f"  Saltos pequenos quando todos os chars são iguais")
 
@@ -278,12 +328,16 @@ class TestComparisonWorstCases:
         pattern = "aaab"
         text = "a" * 500 + "b"
 
-        print(f"\n[Comparison - Repeated Chars] Pattern: '{pattern}', Texto: {len(text)} chars")
+        print(
+            f"\n[Comparison - Repeated Chars] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
         for algo in algorithms:
             matches, comparisons, _ = algo.search(text, pattern)
             expected_match = [497]  # Position where "aaab" is found
             print(f"  {algo.name}: match={matches}, comparações={comparisons}")
-            assert matches == expected_match, f"{algo.name}: esperado {expected_match}, obtive {matches}"
+            assert (
+                matches == expected_match
+            ), f"{algo.name}: esperado {expected_match}, obtive {matches}"
 
     def test_worst_case_no_occurrences(self):
         """Nenhuma ocorrência - todos devem retornar lista vazia"""
@@ -297,7 +351,9 @@ class TestComparisonWorstCases:
         pattern = "xyz"
         text = "a" * 1000 + "bbb"
 
-        print(f"\n[Comparison - No Occurrences] Pattern: '{pattern}', Texto: {len(text)} chars")
+        print(
+            f"\n[Comparison - No Occurrences] Pattern: '{pattern}', Texto: {len(text)} chars"
+        )
         for algo in algorithms:
             matches, comparisons, _ = algo.search(text, pattern)
             print(f"  {algo.name}: matches={len(matches)}, comparações={comparisons}")
