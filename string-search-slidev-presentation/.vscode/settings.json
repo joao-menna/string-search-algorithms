@@ -1,0 +1,10 @@
+{
+    "slidev.include": [
+        "**/slides.md",
+        "slides.md",
+        "slides.md",
+        "README.md",
+        "slides.md",
+        "slides.md"
+    ]
+}

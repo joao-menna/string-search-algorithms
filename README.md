@@ -74,11 +74,11 @@ Exemplos de execução:
 
 1. Executar todos os algoritmos em um arquivo:
 
-   python main.py text.txt -p "the" -a all
+   python main.py text.txt -p "rehearsal" -a all
 
 2. Executar apenas KMP:
 
-   python main.py text.txt -p "the" -a kmp
+   python main.py text.txt -p "rehearsal" -a kmp
 
 3. Executar em múltiplos arquivos:
 
@@ -86,11 +86,11 @@ Exemplos de execução:
 
 4. Modo passo a passo (log detalhado):
 
-   python main.py text.txt -p "the" -a boyer-moore --step-by-step
+   python main.py text.txt -p "rehearsal" -a boyer-moore --step-by-step
 
 5. Executar com OpenTelemetry habilitado e exportando spans locais:
 
-  python main.py text.txt -p "the" -a all --telemetry-dir telemetry_data
+  python main.py text.txt -p "rehearsal" -a all --telemetry-dir telemetry_data
 
 6. Abrir o dashboard:
 
@@ -155,11 +155,8 @@ Para cada execução, a aplicação mostra:
 - Total de comparações relacionadas
 
 - Complexidade teórica:
-  
   - Melhor caso
-  
   - Caso médio
-  
   - Pior caso
 
 - Comparação real vs esperado:
