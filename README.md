@@ -88,7 +88,7 @@ Exemplos de execução:
 
    python main.py text.txt -p "rehearsal" -a boyer-moore --step-by-step
 
-5. Executar com OpenTelemetry habilitado e exportando spans locais:
+5. Executar com OpenTelemetry apontando para um diretório específico e exportando spans locais:
 
   python main.py text.txt -p "rehearsal" -a all --telemetry-dir telemetry_data
 

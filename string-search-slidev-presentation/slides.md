@@ -281,3 +281,60 @@ transition: slide-up
 - Pula várias posições do texto ao encontrar caracteres que não existem no padrão.
 - Torna-se mais rápido à medida que o padrão cresce.
 - Padrão ouro em buscas práticas (grep, editores).
+
+---
+layout: two-cols-header
+transition: slide-up
+---
+
+# Observabilidade do Experimento
+
+::left::
+
+<br />
+<br />
+<br />
+
+Fluxo de Dados:
+
+- **Spans**: Cada busca é rastraeada com metadados ricos (pattern, size, algorithm).
+- **Exportação**: Arquivos JSONL locais para baixo overhead.
+- **Dashboard**: Streamlit lê o histórico e gera gráficos de dispersão e boxplots.
+
+::right::
+
+<div class="size-full flex items-center justify-center">
+  <img src="/assets/observability.png" class="flex items-center rounded">
+</div>
+
+---
+transition: slide-up
+---
+
+# Resultados Finais
+
+- **Padrão**: "Celebrity marriage"
+- **Texto**: Roteiro de Bee Movie + Roteiro de Shrek (~89.000 caracteres)
+- **Observação**: O padrão se encontra no final do texto
+
+---
+transition: slide-up
+---
+
+<div class="size-full flex flex-col gap-4">
+  <h1>Resultados Finais</h1>
+
+  <div class="h-full">
+    <Metrics />
+  </div>
+</div>
+
+---
+transition: slide-up
+---
+
+# Conclusão
+
+- Boyer-moore se destacou como eficiente, especialmente para padrões maiores.
+- KMP mostrou desempenho consistente, superando o Naive em casos de muitos matches parciais.
+- A observabilidade permitiu validar as complexidades teóricas com dados reais, revelando nuances de desempenho em diferentes cenários.

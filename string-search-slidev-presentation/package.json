@@ -15,6 +15,7 @@
     "@slidev/cli": "^52.15.2",
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
+    "motion-v": "^2.2.1",
     "slidev-theme-dracula": "^0.2.0",
     "vue": "^3.5.33"
   },
