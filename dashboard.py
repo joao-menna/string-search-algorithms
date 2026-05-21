@@ -46,7 +46,7 @@ def load_runs(data_file: str) -> pd.DataFrame:
 
 def render_empty_state(data_file: Path) -> None:
     st.info(
-        "Nenhuma execucao instrumentada encontrada ainda. Rode o programa principal para gerar spans em "
+        "Nenhuma execução instrumentada encontrada ainda. Rode o programa principal para gerar spans em "
         f"{data_file}."
     )
     st.code('python main.py text.txt -p "the" -a all', language="bash")
@@ -58,7 +58,7 @@ def main() -> None:
     )
     st.title("Dashboard de Busca com OpenTelemetry")
     st.caption(
-        "Comparacao historica das execucoes instrumentadas dos algoritmos de busca."
+        "Comparação histórica das execuções instrumentadas dos algoritmos de busca."
     )
 
     data_file = Path(
@@ -86,13 +86,13 @@ def main() -> None:
     ].copy()
 
     if filtered.empty:
-        st.warning("Os filtros atuais nao retornaram execucoes.")
+        st.warning("Os filtros atuais não retornaram execuções.")
         return
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Execucoes", int(len(filtered)))
-    col2.metric("Tempo medio", f"{filtered['search.elapsed_ms'].mean():.3f} ms")
-    col3.metric("Comparacoes medias", f"{filtered['search.comparisons'].mean():.0f}")
+    col1.metric("Execuções", int(len(filtered)))
+    col2.metric("Tempo médio", f"{filtered['search.elapsed_ms'].mean():.3f} ms")
+    col3.metric("Comparações médias", f"{filtered['search.comparisons'].mean():.0f}")
 
     grouped = (
         filtered.groupby("search.algorithm", as_index=False)
@@ -109,7 +109,7 @@ def main() -> None:
     left, right = st.columns(2)
 
     with left:
-        st.subheader("Tempo de execucao por algoritmo")
+        st.subheader("Tempo de execução por algoritmo")
         fig_time = px.bar(
             grouped,
             x="search.algorithm",
@@ -117,25 +117,25 @@ def main() -> None:
             color="search.algorithm",
             labels={
                 "search.algorithm": "Algoritmo",
-                "tempo_medio_ms": "Tempo medio (ms)",
+                "tempo_medio_ms": "Tempo médio (ms)",
             },
         )
         fig_time.update_layout(showlegend=False)
         st.plotly_chart(fig_time, use_container_width=True)
 
     with right:
-        st.subheader("Numero de execucoes")
+        st.subheader("Número de execuções")
         fig_runs = px.bar(
             grouped,
             x="search.algorithm",
             y="execucoes",
             color="search.algorithm",
-            labels={"search.algorithm": "Algoritmo", "execucoes": "Execucoes"},
+            labels={"search.algorithm": "Algoritmo", "execucoes": "Execuções"},
         )
         fig_runs.update_layout(showlegend=False)
         st.plotly_chart(fig_runs, use_container_width=True)
 
-    st.subheader("Comparacoes entre algoritmos")
+    st.subheader("Comparações entre algoritmos")
 
     fig_compare = px.scatter(
         filtered,
@@ -145,10 +145,10 @@ def main() -> None:
         size="search.matches_count",
         hover_data=["search.file_path", "search.text_length", "search.pattern_length"],
         labels={
-            "search.comparisons": "Comparacoes",
+            "search.comparisons": "Comparações",
             "search.elapsed_ms": "Tempo (ms)",
             "search.algorithm": "Algoritmo",
-            "search.matches_count": "Ocorrencias",
+            "search.matches_count": "Ocorrências",
         },
     )
     st.plotly_chart(fig_compare, use_container_width=True)
@@ -158,11 +158,11 @@ def main() -> None:
         grouped.rename(
             columns={
                 "search.algorithm": "Algoritmo",
-                "execucoes": "Execucoes",
-                "tempo_medio_ms": "Tempo medio (ms)",
+                "execucoes": "Execuções",
+                "tempo_medio_ms": "Tempo médio (ms)",
                 "tempo_total_ms": "Tempo total (ms)",
-                "comparacoes_medias": "Comparacoes medias",
-                "matches_medios": "Ocorrencias medias",
+                "comparacoes_medias": "Comparações médias",
+                "matches_medios": "Ocorrências médias",
             }
         ),
         use_container_width=True,

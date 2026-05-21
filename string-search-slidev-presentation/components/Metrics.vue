@@ -66,45 +66,42 @@ function getBiggestTime(runs: { time: string }[]) {
         <MetricSelector @screen-change="handleScreenChange" />
 
         <div class="size-full relative">
-            <motion.div
-            >
-                <AnimatePresence>
-                    <motion.div
-                        class="flex flex-col gap-4 size-full absolute"
-                        v-if="screen === 'not-stepped'"
-                        layout
-                        :initial="{ opacity: 0, x: -120 }"
-                        :animate="{ opacity: 1, x: 0 }"
-                        :exit="{ opacity: 0, x: -120 }"
-                    >
-                        <SingleMetric
-                            v-for="row in runsNormal"
-                            :key="row.name"
-                            :name="row.name"
-                            :time="row.time"
-                            :comparisons="row.comparisons"
-                            :getBiggestTime="() => getBiggestTime(runsNormal)"
-                        />
-                    </motion.div>
-                    <motion.div
-                        class="flex flex-col gap-4 size-full absolute"
-                        v-if="screen === 'stepped'"
-                        layout
-                        :initial="{ opacity: 0, x: 120 }"
-                        :animate="{ opacity: 1, x: 0 }"
-                        :exit="{ opacity: 0, x: 120 }"
-                    >
+            <AnimatePresence :initial="false">
+                <motion.div
+                    class="flex flex-col gap-4 size-full absolute"
+                    v-if="screen === 'not-stepped'"
+                    key="not-stepped"
+                    :initial="{ opacity: 0, x: -120 }"
+                    :animate="{ opacity: 1, x: 0 }"
+                    :exit="{ opacity: 0, x: -120 }"
+                >
                     <SingleMetric
-                        v-for="row in runsStepped"
+                        v-for="row in runsNormal"
                         :key="row.name"
                         :name="row.name"
                         :time="row.time"
                         :comparisons="row.comparisons"
-                        :getBiggestTime="() => getBiggestTime(runsStepped)"
+                        :getBiggestTime="() => getBiggestTime(runsNormal)"
                     />
-                    </motion.div>
-                </AnimatePresence>
-            </motion.div>
+                </motion.div>
+                <motion.div
+                    class="flex flex-col gap-4 size-full absolute"
+                    v-if="screen === 'stepped'"
+                    key="stepped"
+                    :initial="{ opacity: 0, x: 120 }"
+                    :animate="{ opacity: 1, x: 0 }"
+                    :exit="{ opacity: 0, x: 120 }"
+                >
+                <SingleMetric
+                    v-for="row in runsStepped"
+                    :key="row.name"
+                    :name="row.name"
+                    :time="row.time"
+                    :comparisons="row.comparisons"
+                    :getBiggestTime="() => getBiggestTime(runsStepped)"
+                />
+                </motion.div>
+            </AnimatePresence>
         </div>
     </div>
 </template>

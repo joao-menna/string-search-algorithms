@@ -311,18 +311,19 @@ Fluxo de Dados:
 transition: slide-up
 ---
 
-# Resultados Finais
+# Resultados Finais - Especificações do Teste
 
 - **Padrão**: "Celebrity marriage"
 - **Texto**: Roteiro de Bee Movie + Roteiro de Shrek (~89.000 caracteres)
 - **Observação**: O padrão se encontra no final do texto
 
 ---
+title: Resultados Finais - Análise de Desempenho
 transition: slide-up
 ---
 
 <div class="size-full flex flex-col gap-4">
-  <h1>Resultados Finais</h1>
+  <h1>Resultados Finais - Análise de Desempenho</h1>
 
   <div class="h-full">
     <Metrics />
@@ -333,8 +334,42 @@ transition: slide-up
 transition: slide-up
 ---
 
+# Resultados Finais - Complemento
+
+- Foram feitas mais execuções com padrões menores e maiores, confirmando as tendências observadas.
+- O dashboard permite comparar facilmente o desempenho de cada algoritmo em diferentes cenários, revelando insights sobre suas eficiências relativas.
+
+---
+transition: slide-up
+---
+
+# Análise do Dashboard
+
+Instruções para acessar o dashboard:
+
+- Certifique-se de ter o ambiente Python configurado e as dependências instaladas.
+- Execute o comando `streamlit run dashboard.py` no terminal.
+- Abra o link abaixo para visualizar os resultados e interagir com os gráficos.
+
+[Acessar Dashboard](http://localhost:8501)
+
+---
+transition: slide-up
+---
+
 # Conclusão
 
 - Boyer-moore se destacou como eficiente, especialmente para padrões maiores.
 - KMP mostrou desempenho consistente, superando o Naive em casos de muitos matches parciais.
 - A observabilidade permitiu validar as complexidades teóricas com dados reais, revelando nuances de desempenho em diferentes cenários.
+
+---
+transition: slide-up
+---
+
+# Créditos
+
+- Slidev para a plataforma de apresentação.
+- OpenTelemetry para a coleta de métricas.
+- Streamlit para o dashboard de visualização.
+- Fontes de dados: Roteiros de Bee Movie e Shrek.
