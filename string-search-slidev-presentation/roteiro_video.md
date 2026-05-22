@@ -2,7 +2,7 @@
 
 ## Slide 1 - Abertura
 
-Olá! Eu sou João Miguel de Castro Menna e neste projeto eu exploro algoritmos clássicos de busca em texto: Naive, Rabin-Karp, KMP e Boyer-Moore.
+Olá! Eu sou João Menna e neste projeto eu exploro algoritmos clássicos de busca em texto: Naive, Rabin-Karp, Knuth Morris Pratt (ou KMP) e Boyer-Moore.
 
 O foco aqui não é só implementar os algoritmos, mas comparar como eles se comportam na prática, com métricas reais de execução. Ao longo da apresentação, eu vou mostrar arquitetura, fluxo de execução, base teórica e os resultados finais.
 
@@ -22,7 +22,7 @@ Com esse objetivo em mente, estas foram as principais entregas do projeto.
 
 A primeira entrega foi uma execução flexível por linha de comando, permitindo processar tanto arquivos individuais quanto lotes de arquivos.
 
-A segunda foi a coleta de métricas reais: tempo de CPU, número de comparações e memória, tudo instrumentado com OpenTelemetry.
+A segunda foi a coleta de métricas reais: tempo de CPU e número de comparações, tudo instrumentado com OpenTelemetry.
 
 E a terceira foi um dashboard em Streamlit, que facilita a análise histórica e comparativa dos benchmarks.
 
@@ -38,7 +38,7 @@ Agora vou mostrar rapidamente como a apresentação está organizada.
 
 ## Slide 5 - Sumário
 
-A sequência é: arquitetura com Strategy, fluxo da CLI, métricas, revisão dos algoritmos, camada de observabilidade e, por fim, resultados e conclusões.
+A sequência é: arquitetura com Strategy, fluxo do App CLI, métricas, revisão dos algoritmos, camada de observabilidade e, por fim, resultados e conclusões.
 
 Começando pela base de arquitetura do projeto.
 
@@ -48,13 +48,13 @@ Eu usei o padrão Strategy para separar claramente cada algoritmo de busca.
 
 Todos implementam uma interface comum, chamada SearchStrategy. Isso permite trocar o algoritmo em tempo de execução sem alterar a lógica cliente.
 
-Na prática, a CLI atua como contexto e delega a execução para a estratégia escolhida. Esse desacoplamento facilita testes, manutenção e comparação objetiva entre algoritmos.
+Na prática, o App CLI atua como contexto e delega a execução para a estratégia escolhida. Esse desacoplamento facilita testes, manutenção e comparação objetiva entre algoritmos.
 
 Com a arquitetura definida, vamos ao pipeline de execução.
 
 ## Slide 7 - Fluxo de Execução
 
-Este fluxo mostra o caminho completo em cinco etapas visuais: Entrada da CLI, Leitura dos Arquivos, Execução dos Algoritmos, Telemetria com spans e Resultados.
+Este fluxo mostra o caminho completo em cinco etapas visuais: Entrada, Leitura dos Arquivos, Execução, Telemetria e Resultados.
 
 A ideia foi deixar tudo automatizado, para que cada execução já produza dados prontos para análise no dashboard.
 
@@ -64,7 +64,7 @@ Para entender esse fluxo, vale olhar os parâmetros expostos na CLI.
 
 Aqui estão os parâmetros principais da interface de linha de comando.
 
-Concretamente, a tabela mostra as flags files, -p/--pattern, -a/--algorithm, --step-by-step e --telemetry-dir.
+Temos files, -p/--pattern, -a/--algorithm, --step-by-step e --telemetry-dir.
 
 O parâmetro de algoritmo aceita naive, rabin-karp, boyer-moore, kmp ou all, então dá para rodar um único método ou comparar todos no mesmo comando.
 
@@ -74,13 +74,9 @@ Mas afinal, quais medidas nós capturamos em cada execução?
 
 ## Slide 9 - O que Medimos?
 
-As métricas centrais são: tempo de execução em nanossegundos, número de comparações de caracteres e relação entre custo observado e custo esperado.
+As métricas centrais são: tempo de execução em milissegundos, número de comparações de caracteres e relação entre custo observado e custo esperado.
 
-Nos cards, isso aparece como Nano para tempo, count++ para comparações, n/m para razão real vs esperado e O(f) para complexidade teórica.
-
-Além disso, cada resultado é analisado junto da complexidade teórica do algoritmo.
-
-Isso permite identificar não só quem foi mais rápido, mas também por que foi mais rápido em determinado cenário.
+Nos cards, isso aparece como Milli para tempo, count++ para comparações, n/m para razão real vs esperado e O(f) para complexidade teórica.
 
 Com essas métricas em mente, vamos revisar a base teórica.
 
@@ -160,11 +156,9 @@ Aqui estão os números consolidados dessa comparação.
 
 Nesta visualização, comparamos tempo em milissegundos e total de comparações entre os algoritmos.
 
-No modo Comparação normal, os tempos exibidos são: Naive 11.17ms, Rabin-Karp 13.47ms, KMP 6.52ms e Boyer-Moore 1.46ms.
+No modo Comparação normal, os tempos exibidos são: Naive 11ms, Rabin-Karp 13ms, KMP 6ms e Boyer-Moore 1ms.
 
-No modo Comparação stepped, os tempos sobem por causa da visualização detalhada: Naive 43.00ms, Rabin-Karp 33.86ms, KMP 25.20ms e Boyer-Moore 5.65ms.
-
-As comparações mostradas no componente são: Naive 87965, Rabin-Karp 862, KMP 87973 e Boyer-Moore 7708.
+No modo Comparação stepped, os tempos sobem por causa da visualização detalhada: Naive 43ms, Rabin-Karp 33ms, KMP 25ms e Boyer-Moore 5ms.
 
 O comportamento observado confirma tendências clássicas: algoritmos com melhor heurística de salto e/ou melhor reaproveitamento de informação tendem a reduzir comparações e tempo total.
 

@@ -164,7 +164,7 @@ transition: slide-up
 
 <div class="flex flex-col justify-center size-full gap-8 pb-8">
   <div class="flex gap-8">
-    <MeasureCard title="Nano" description="TEMPO DE EXECUÇÃO" />
+    <MeasureCard title="Milli" description="TEMPO DE EXECUÇÃO" />
     <MeasureCard title="count++" description="COMPARAÇÕES DE CARACTERES" />
   </div>
   <div class="flex gap-8">
