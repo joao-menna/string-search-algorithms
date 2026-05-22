@@ -42,6 +42,35 @@ class SearchStrategy(ABC):
             span.set_attribute("search.text_length", len(text))
             span.set_attribute("search.step_by_step", step_by_step)
 
+            if len(pattern) > len(text):
+                logs: list[str] = []
+                if step_by_step:
+                    logs.append(
+                        "padrao maior que o texto: busca encerrada sem comparacoes"
+                    )
+
+                span.set_attribute("search.comparisons", 0)
+                span.set_attribute("search.matches_count", 0)
+                span.set_attribute("search.elapsed_ms", 0.0)
+
+                return SearchResult(
+                    algorithm=self.name,
+                    file_path=file_path,
+                    pattern=pattern,
+                    text_length=len(text),
+                    pattern_length=len(pattern),
+                    comparisons=0,
+                    matches=[],
+                    elapsed_seconds=0.0,
+                    theoretical_best=self.theoretical_best,
+                    theoretical_average=self.theoretical_average,
+                    theoretical_worst=self.theoretical_worst,
+                    expected_scale_average=self.expected_average_scale(
+                        len(text), len(pattern)
+                    ),
+                    step_logs=logs,
+                )
+
             start = perf_counter()
             matches, comparisons, logs = self.search(text, pattern, step_by_step)
             elapsed = perf_counter() - start

@@ -92,7 +92,11 @@ Exemplos de execução:
 
   python main.py text.txt -p "rehearsal" -a all --telemetry-dir telemetry_data
 
-6. Abrir o dashboard:
+6. Executar usando arquivo de padrões (um padrão por linha):
+
+  python main.py text.txt -p tests.txt -a all
+
+7. Abrir o dashboard:
 
   streamlit run dashboard.py
 
@@ -100,7 +104,7 @@ Exemplos de execução:
 
 - files: um ou mais arquivos .txt
 
-- -p, --pattern: string/padrão a ser buscado (obrigatório)
+- -p, --pattern: string/padrão a ser buscado (obrigatório). Se o valor informado for o caminho de um arquivo existente, cada linha do arquivo será tratada como um padrão de busca
 
 - -a, --algorithm: naive | rabin-karp | kmp | boyer-moore | all
 

@@ -24,6 +24,7 @@ def format_result(result: SearchResult) -> str:
     lines = [
         f"Algoritmo: {result.algorithm}",
         f"Arquivo: {result.file_path}",
+        f"Padrao pesquisado: {result.pattern}",
         f"Tamanho do texto (n): {result.text_length}",
         f"Tamanho do padrao (m): {result.pattern_length}",
         f"Ocorrencias encontradas: {len(result.matches)}",
@@ -65,21 +66,22 @@ def read_text_file(path: Path) -> str:
 
 
 def run_searches(
-    files: list[Path], pattern: str, algorithm: str, step_by_step: bool
+    files: list[Path], patterns: list[str], algorithm: str, step_by_step: bool
 ) -> list[SearchResult]:
     strategies = build_strategies(algorithm)
     results: list[SearchResult] = []
 
     for file_path in files:
         text = read_text_file(file_path)
-        for strategy in strategies:
-            result = strategy.run(
-                text=text,
-                pattern=pattern,
-                file_path=str(file_path),
-                step_by_step=step_by_step,
-            )
-            results.append(result)
+        for pattern in patterns:
+            for strategy in strategies:
+                result = strategy.run(
+                    text=text,
+                    pattern=pattern,
+                    file_path=str(file_path),
+                    step_by_step=step_by_step,
+                )
+                results.append(result)
 
     return results
 
@@ -90,7 +92,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("files", nargs="+", help="Um ou mais arquivos .txt para busca")
     parser.add_argument(
-        "-p", "--pattern", required=True, help="String/padrao a ser buscado"
+        "-p",
+        "--pattern",
+        required=True,
+        help=(
+            "Padrao de busca. Pode ser string direta ou caminho de arquivo existente "
+            "com um padrao por linha"
+        ),
     )
     parser.add_argument(
         "-a",
@@ -117,10 +125,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def validate_input(files: list[str], pattern: str) -> list[Path]:
-    if not pattern:
-        raise ValueError("O padrao de busca nao pode ser vazio.")
-
+def validate_input(files: list[str]) -> list[Path]:
     normalized_files = [Path(f).expanduser().resolve() for f in files]
     missing = [str(p) for p in normalized_files if not p.exists()]
     if missing:
@@ -135,16 +140,40 @@ def validate_input(files: list[str], pattern: str) -> list[Path]:
     return normalized_files
 
 
+def resolve_patterns(pattern_input: str) -> tuple[list[str], Path | None]:
+    if not pattern_input:
+        raise ValueError("O padrao de busca nao pode ser vazio.")
+
+    candidate = Path(pattern_input).expanduser()
+    if candidate.exists():
+        resolved = candidate.resolve()
+        if not resolved.is_file():
+            raise ValueError(
+                "O caminho informado em -p/--pattern existe, mas nao e um arquivo: "
+                + str(resolved)
+            )
+
+        patterns = [line for line in read_text_file(resolved).splitlines() if line]
+        if not patterns:
+            raise ValueError(
+                "O arquivo de padroes esta vazio ou contem apenas linhas em branco."
+            )
+        return patterns, resolved
+
+    return [pattern_input], None
+
+
 def main() -> None:
     args = parse_args()
     telemetry_path: Path | None = None
     if not args.disable_telemetry:
         telemetry_path = configure_telemetry(export_dir=args.telemetry_dir)
-    files = validate_input(args.files, args.pattern)
+    files = validate_input(args.files)
+    patterns, pattern_file = resolve_patterns(args.pattern)
     try:
         results = run_searches(
             files=files,
-            pattern=args.pattern,
+            patterns=patterns,
             algorithm=args.algorithm,
             step_by_step=args.step_by_step,
         )
@@ -164,6 +193,10 @@ def main() -> None:
                     print(f"  {line}")
             else:
                 print("  sem eventos detalhados")
+
+    if pattern_file is not None:
+        print("\n" + "-" * 72)
+        print(f"Padroes carregados de: {pattern_file} ({len(patterns)} linhas validas)")
 
     if telemetry_path is not None:
         print("\n" + "-" * 72)

@@ -182,6 +182,12 @@ Com o ambiente Python configurado e dependências instaladas, basta executar o c
 
 Depois disso, o dashboard fica disponível no navegador para explorar filtros, distribuições e comparações históricas.
 
+Aqui o dashboard entra como a camada de leitura histórica do experimento. Ele consolida as execuções instrumentadas com OpenTelemetry e mostra, logo no topo, métricas agregadas como quantidade de execuções, tempo médio e número médio de comparações.
+
+Na sequência, dá para analisar os gráficos por algoritmo: tempo médio de execução, número de execuções e a relação entre comparações e tempo, o que ajuda a enxergar rapidamente quais estratégias estão mais consistentes ou mais custosas.
+
+Além disso, a página permite filtrar os dados por arquivo e por algoritmo, então eu consigo comparar cenários específicos sem perder a visão geral. No fim, a tabela de resumo agregado fecha a análise com execuções, tempo médio, tempo total e comparações médias de cada estratégia.
+
 Fechando, estes são os principais aprendizados do projeto.
 
 ## Slide 20 - Conclusão
